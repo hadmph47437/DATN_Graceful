@@ -1,14 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router';
-// import HocSinh from '../components/hoc-sinh/HocSinh.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import ListKhachHang from "../components/khachhang/ListKhachHang.vue";
 
 const routes = [
-    // { path: '/', component: HocSinh }
-
+  { path: "/", redirect: "/list" },
+  { path: "/list", component: ListKhachHang },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;

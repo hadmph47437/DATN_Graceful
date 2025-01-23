@@ -1,8 +1,15 @@
+
+// datnfe/src/router/router.js
 import { createRouter, createWebHistory } from 'vue-router';
-// import HocSinh from '../components/hoc-sinh/HocSinh.vue';
+import HoaDon from '../components/hoadon/HoaDonList.vue';
+import login from '../components/login/login.vue';
+import BanHang from '../components/banhang/BanHang.vue';
+
 
 const routes = [
-    // { path: '/', component: HocSinh }
+    { path: '/', component: login },
+    { path: '/ban-hang', component: BanHang },
+    {path : '/hoa-don/hien-thi', component: HoaDon}
 
 ];
 

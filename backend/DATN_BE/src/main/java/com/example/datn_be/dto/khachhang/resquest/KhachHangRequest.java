@@ -1,8 +1,5 @@
 package com.example.datn_be.dto.khachhang.resquest;
 
-import com.example.datn_be.dto.khachhang.response.DiaChiEditResponse;
-import com.example.datn_be.entiy.DiaChi;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,8 +29,6 @@ public class KhachHangRequest {
     private String soDienThoai;
 
     private String tenDangNhap;
-
-    private String matKhau;
 
     private LocalDate ngayTao;
 

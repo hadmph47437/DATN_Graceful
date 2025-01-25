@@ -5,7 +5,7 @@ GO
 -- Bảng Nhà cung cấp
 CREATE TABLE nha_cung_cap (
     id INT PRIMARY KEY IDENTITY(1,1),
-    ten_nha_cung_cap NVARCHAR(255),
+    ten_nha_cung_cap NVARCHAR(255) COLLATE Latin1_General_CI_AI,
     dia_chi NVARCHAR(255),
     so_dien_thoai NVARCHAR(20),
     email NVARCHAR(255),
@@ -17,7 +17,7 @@ GO
 -- Bảng Màu sắc
 CREATE TABLE mau_sac (
     id INT PRIMARY KEY IDENTITY(1,1),
-    ten_mau_sac NVARCHAR(255),
+    ten_mau_sac NVARCHAR(255) COLLATE Latin1_General_CI_AI,
 	trang_thai BIT,
 	mo_ta NVARCHAR(MAX),
 	ngay_tao DATETIME DEFAULT GETDATE(),
@@ -26,7 +26,7 @@ GO
 -- Bảng Kích thước
 CREATE TABLE kich_thuoc (
     id INT PRIMARY KEY IDENTITY(1,1),
-    ten_kich_thuoc NVARCHAR(50),
+    ten_kich_thuoc NVARCHAR(50) COLLATE Latin1_General_CI_AI,
 	trang_thai BIT,
 	mo_ta NVARCHAR(MAX),
 	ngay_tao DATETIME DEFAULT GETDATE(),
@@ -35,7 +35,7 @@ GO
 -- Bảng Chất liệu
 CREATE TABLE chat_lieu (
     id INT PRIMARY KEY IDENTITY(1,1),
-    ten_chat_lieu NVARCHAR(255),
+    ten_chat_lieu NVARCHAR(255) COLLATE Latin1_General_CI_AI,
 	trang_thai BIT,
 	mo_ta NVARCHAR(MAX),
 	ngay_tao DATETIME DEFAULT GETDATE(),
@@ -44,7 +44,7 @@ GO
 -- Bảng Loại sản phẩm
 CREATE TABLE loai_ao_dai (
     id INT PRIMARY KEY IDENTITY(1,1),
-    ten_loai_ao_dai NVARCHAR(255),
+    ten_loai_ao_dai NVARCHAR(255) COLLATE Latin1_General_CI_AI,
 	trang_thai BIT,
 	mo_ta NVARCHAR(MAX),
 	ngay_tao DATETIME DEFAULT GETDATE(),
@@ -53,7 +53,7 @@ GO
 -- Bảng Tà áo
 CREATE TABLE ta_ao (
     id INT PRIMARY KEY IDENTITY(1,1),
-    ten_ta_ao NVARCHAR(255),
+    ten_ta_ao NVARCHAR(255) COLLATE Latin1_General_CI_AI,
 	trang_thai BIT,
 	mo_ta NVARCHAR(MAX),
 	ngay_tao DATETIME DEFAULT GETDATE(),
@@ -63,18 +63,32 @@ GO
 CREATE TABLE ao_dai (
     id INT PRIMARY KEY IDENTITY(1,1),
 	ma_ao_dai AS CONCAT('SP', RIGHT('000' + CAST(id AS VARCHAR(3)), 3)) PERSISTED,
-    ten_ao_dai NVARCHAR(255),
+    ten_ao_dai NVARCHAR(255) COLLATE Latin1_General_CI_AI,
     mo_ta NVARCHAR(MAX),
     id_loai_ao_dai INT,
     id_nha_cung_cap INT,
 	id_ta_ao INT,
 	id_chat_lieu INT,
 	trang_thai BIT,
-	ngay_tao DATETIME DEFAULT GETDATE()
+	ngay_tao DATETIME DEFAULT GETDATE(),
+	link_youtube Varchar(255),
     FOREIGN KEY (id_loai_ao_dai) REFERENCES loai_ao_dai(id),
     FOREIGN KEY (id_nha_cung_cap) REFERENCES nha_cung_cap(id),
 	FOREIGN KEY (id_ta_ao) REFERENCES ta_ao(id),
     FOREIGN KEY (id_chat_lieu) REFERENCES chat_lieu(id)
+);
+
+-- Bảng Khuyến mãi
+CREATE TABLE khuyen_mai (
+    id INT PRIMARY KEY IDENTITY(1,1),
+	ma_khuyen_mai AS CONCAT('KM', RIGHT('000' + CAST(id AS VARCHAR(3)), 3)) PERSISTED,
+    ten_khuyen_mai NVARCHAR(255),
+	phan_tram_giam INT,
+    ngay_bat_dau DATE,
+    ngay_ket_thuc DATE,
+	trang_thai BIT,
+	mo_ta NVARCHAR(MAX),
+	ngay_tao DATETIME DEFAULT GETDATE()
 );
 GO
 -- Bảng Sản phẩm chi tiết
@@ -83,6 +97,7 @@ CREATE TABLE ao_dai_chi_tiet (
 	ma_ao_dai_chi_tiet AS CONCAT('SPCT', RIGHT('000' + CAST(id AS VARCHAR(3)), 3)) PERSISTED,
     id_ao_dai INT,
     id_mau_sac INT,
+	id_khuyen_mai INT,
 	gia_goc DECIMAL(18,0),
 	gia_ban DECIMAL(18,0),
     id_kich_thuoc INT,
@@ -93,16 +108,17 @@ CREATE TABLE ao_dai_chi_tiet (
     FOREIGN KEY (id_ao_dai) REFERENCES ao_dai(id),
     FOREIGN KEY (id_mau_sac) REFERENCES mau_sac(id),
     FOREIGN KEY (id_kich_thuoc) REFERENCES kich_thuoc(id),
+	FOREIGN KEY (id_khuyen_mai) REFERENCES khuyen_mai(id)
 );
 GO
 -- Bảng Ảnh
 CREATE TABLE anh (
     id INT PRIMARY KEY IDENTITY(1,1),
     anh_url NVARCHAR(MAX),
-    id_san_pham INT,
+    id_ao_dai INT,
 	ngay_tao DATETIME DEFAULT GETDATE(),
 	trang_thai BIT
-    FOREIGN KEY (id_san_pham) REFERENCES ao_dai(id)
+    FOREIGN KEY (id_ao_dai) REFERENCES ao_dai(id)
 );
 GO
 -- Bảng Vai trò
@@ -133,7 +149,7 @@ GO
 CREATE TABLE khach_hang (
     id INT PRIMARY KEY IDENTITY(1,1),
 	ma_khach_hang AS CONCAT('KH', RIGHT('000' + CAST(id AS VARCHAR(3)), 3)) PERSISTED,
-    ho_ten NVARCHAR(255),
+    ho_ten NVARCHAR(255)COLLATE Latin1_General_CI_AI,
 	gioi_tinh BIT,
 	ngay_sinh DATE,
     email NVARCHAR(255),
@@ -216,20 +232,7 @@ CREATE TABLE gio_hang_chi_tiet (
     FOREIGN KEY (id_ao_dai_chi_tiet) REFERENCES ao_dai_chi_tiet(id)
 );
 GO
--- Bảng Khuyến mãi
-CREATE TABLE khuyen_mai (
-    id INT PRIMARY KEY IDENTITY(1,1),
-	ma_khuyen_mai AS CONCAT('KM', RIGHT('000' + CAST(id AS VARCHAR(3)), 3)) PERSISTED,
-    ten_khuyen_mai NVARCHAR(255),
-	phan_tram_giam INT,
-	id_ao_dai_chi_tiet INT,
-    ngay_bat_dau DATE,
-    ngay_ket_thuc DATE,
-	trang_thai BIT,
-	mo_ta NVARCHAR(MAX),
-	ngay_tao DATETIME DEFAULT GETDATE(),
-	FOREIGN KEY (id_ao_dai_chi_tiet) REFERENCES ao_dai_chi_tiet(id)
-);
+
 
 
 -- Bảng Nhà cung cấp
@@ -295,17 +298,27 @@ VALUES
 (N'Áo dài ef', N'Áo dài Việt Nam', 4, 4, 1, 2, 1),
 (N'Áo dài thật', N'Áo dài Việt Nam', 5, 5, 1, 5, 1);
 
--- Bảng Sản phẩm chi tiết
-INSERT INTO ao_dai_chi_tiet(id_ao_dai, id_mau_sac, gia_goc, gia_ban, id_kich_thuoc, so_luong, trang_thai)
+-- Bảng Khuyến mãi
+INSERT INTO khuyen_mai (ten_khuyen_mai, phan_tram_giam, ngay_bat_dau, ngay_ket_thuc, trang_thai, mo_ta)
 VALUES 
-(1, 1, 500000, 550000, 1, 100, 1),
-(2, 2, 300000, 350000, 2, 50, 1),
-(3, 3, 150000, 170000, 3, 200, 1),
-(4, 4, 250000, 280000, 4, 80, 1),
-(5, 5, 400000, 450000, 5, 120, 1);
+(N'Khuyến mãi mùa xuân', 10, '2025-01-01', '2025-01-31', 1, N'Khuyến mãi đặc biệt mùa xuân'),
+(N'Khuyến mãi Tết Nguyên Đán', 15, '2025-02-01', '2025-02-15', 1, N'Khuyến mãi Tết'),
+(N'Khuyến mãi mùa hè', 20, '2025-06-01', '2025-06-30', 1, N'Khuyến mãi mùa hè 2025'),
+(N'Khuyến mãi Black Friday', 25, '2025-11-01', '2025-11-30', 1, N'Giảm giá đặc biệt Black Friday'),
+(N'Khuyến mãi Giáng Sinh', 30, '2025-12-01', '2025-12-25', 1, N'Giảm giá Giáng Sinh');
 
+-- Bảng Sản phẩm chi tiết
+INSERT INTO ao_dai_chi_tiet(id_ao_dai, id_mau_sac,id_khuyen_mai, gia_goc, gia_ban, id_kich_thuoc, so_luong, trang_thai)
+VALUES 
+(1, 1, 1,500000, 550000, 1, 100, 1),
+(2, 2, 2,300000, 350000, 2, 50, 1),
+(3, 3, 1,150000, 170000, 3, 200, 1),
+(4, 4, 1,250000, 280000, 4, 80, 1),
+(5, 5, 1,400000, 450000, 5, 120, 1);
+
+select * from ao_dai_chi_tiet
 -- Bảng Ảnh
-INSERT INTO anh (anh_url, id_san_pham, trang_thai)
+INSERT INTO anh (anh_url, id_ao_dai, trang_thai)
 VALUES 
 ('http://example.com/images/sp1.jpg', 1, 1),
 ('http://example.com/images/sp2.jpg', 2, 1),
@@ -321,12 +334,13 @@ VALUES
 -- Bảng Nhân viên
 INSERT INTO nhan_vien (ten_dang_nhap, ho_va_ten, gioi_tinh, ngay_sinh, email, mat_khau, so_dien_thoai, dia_chi, trang_thai, id_vai_tro)
 VALUES 
-('abcde1', N'Nguyễn Văn A', 1, '1990-01-01', 'admin@example.com', 'password123', '0123456789', N'Hà Nội', 1, 1),
+('abcde6', N'Nguye', 1, '1990-01-01', 'admin@example.com', 'password123', '0123456789', N'Hà Nội', 1, 1),
 ('abcde2', N'Trần Thị B', 0, '1995-02-15', 'nv01@example.com', 'password456', '0987654321', N'Hà Nội', 1, 2),
 ('abcde3', N'Lê Văn C', 1, '1988-03-20', 'kt01@example.com', 'password789', '0912345678', N'Hà Nội', 1, 1),
 ('abcde4', N'Phạm Thị D', 0, '1992-04-25', 'tk01@example.com', 'password000', '0934567890', N'Hà Nội', 1, 2),
 ('abcde5', N'Hoàng Văn E', 1, '1985-05-30', 'ql01@example.com', 'password111', '0945678901', N'Hà Nội', 1, 1);
 
+select * from nhan_vien
 -- Bảng Khách hàng
 INSERT INTO khach_hang (ho_ten, gioi_tinh, ngay_sinh, email, so_dien_thoai, ten_dang_nhap, mat_khau, ngay_tao)
 VALUES 
@@ -381,15 +395,6 @@ VALUES
 (3, 3, 5),
 (4, 4, 1),
 (5, 5, 4);
-
--- Bảng Khuyến mãi
-INSERT INTO khuyen_mai (ten_khuyen_mai, phan_tram_giam, ngay_bat_dau, ngay_ket_thuc, trang_thai, mo_ta, id_ao_dai_chi_tiet)
-VALUES 
-(N'Khuyến mãi mùa xuân', 10, '2025-01-01', '2025-01-31', 1, N'Khuyến mãi đặc biệt mùa xuân', 1),
-(N'Khuyến mãi Tết Nguyên Đán', 15, '2025-02-01', '2025-02-15', 1, N'Khuyến mãi Tết', 2),
-(N'Khuyến mãi mùa hè', 20, '2025-06-01', '2025-06-30', 1, N'Khuyến mãi mùa hè 2025', 1),
-(N'Khuyến mãi Black Friday', 25, '2025-11-01', '2025-11-30', 1, N'Giảm giá đặc biệt Black Friday', 1),
-(N'Khuyến mãi Giáng Sinh', 30, '2025-12-01', '2025-12-25', 1, N'Giảm giá Giáng Sinh', 2);
 
 
 

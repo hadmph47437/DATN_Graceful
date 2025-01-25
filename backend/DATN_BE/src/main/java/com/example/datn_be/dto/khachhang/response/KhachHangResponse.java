@@ -1,7 +1,9 @@
 package com.example.datn_be.dto.khachhang.response;
 
+
+import org.springframework.beans.factory.annotation.Value;
+
 import java.time.LocalDate;
-import java.util.List;
 
 public interface KhachHangResponse {
 
@@ -21,10 +23,19 @@ public interface KhachHangResponse {
 
     String getTenDangNhap();
 
-    String getMatKhau();
-
     LocalDate getNgayTao();
 
-    List<DiaChiEditResponse> getDiaChis();
+    @Value("#{target.diaChiId}")
+    Integer getDiaChiId();
+
+    String getDiaChi_duong();
+
+    String getDiaChi_quan();
+
+    String getDiaChi_thanhPho();
+
+    String getDiaChi_tinh();
+
+    Boolean getDiaChi_macDinh();
 
 }

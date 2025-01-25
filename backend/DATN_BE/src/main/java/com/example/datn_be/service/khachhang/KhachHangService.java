@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 public interface KhachHangService {
-    ResponseEntity<?> getAllKhachHang();
+    ResponseEntity<?> getAllKhachHang(String maKhachHang,String hoTen, String email, String soDienThoai, String tenDangNhap, Pageable pageable);
 
     ResponseEntity<?> addKhachHang(KhachHangRequest khachHangRequest);
 
@@ -13,8 +13,5 @@ public interface KhachHangService {
 
     ResponseEntity<?> getKhachHangById(Integer id);
 
-    ResponseEntity<?> phanTrang(Pageable pageable);
-
-    ResponseEntity<?> timKiem(String hoTen, String email, String sdt, String tenDangNhap);
 
 }

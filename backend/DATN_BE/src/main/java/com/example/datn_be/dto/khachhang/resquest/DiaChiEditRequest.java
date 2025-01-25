@@ -11,6 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DiaChiEditRequest {
 
+    private Integer id;
+
     private String duong;
 
     private String quan;

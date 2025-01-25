@@ -28,8 +28,14 @@ public class KhachHangController {
     private final KhachHangServieImpl khachHangServie;
 
     @GetMapping("hien-thi")
-    public ResponseEntity<?> hienThi(){
-        return khachHangServie.getAllKhachHang();
+    public ResponseEntity<?> hienThi(@RequestParam(required = false) String maKhachHang,
+                                     @RequestParam(required = false) String hoTen,
+                                     @RequestParam(required = false) String email,
+                                     @RequestParam(required = false) String soDienThoai,
+                                     @RequestParam(required = false) String tenDangNhap,
+                                     @RequestParam(value = "page",defaultValue = "0") Integer page){
+        Pageable pageable = PageRequest.of(page, 5);
+        return khachHangServie.getAllKhachHang(maKhachHang,hoTen,email,soDienThoai,tenDangNhap,pageable);
     }
 
     @PostMapping("add")
@@ -47,17 +53,4 @@ public class KhachHangController {
         return khachHangServie.getKhachHangById(id);
     }
 
-    @GetMapping("tim-kiem")
-    public ResponseEntity<?> timKhachHang(@RequestParam(required = false) String hoTen,
-                                          @RequestParam(required = false) String email,
-                                          @RequestParam(required = false) String sdt,
-                                          @RequestParam(required = false) String tenDangNhap){
-        return khachHangServie.timKiem(hoTen, email, sdt, tenDangNhap);
-    }
-
-    @GetMapping("phan-trang")
-    public ResponseEntity<?> phanTrang(@RequestParam(value = "page",defaultValue = "0")Integer page){
-        Pageable pageable= PageRequest.of(page,2);
-        return new ResponseEntity<>(khachHangServie.phanTrang(pageable), HttpStatus.OK);
-    }
 }

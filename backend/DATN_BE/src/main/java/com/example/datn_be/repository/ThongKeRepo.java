@@ -15,17 +15,17 @@ import java.util.List;
 public interface ThongKeRepo extends JpaRepository<AoDai,Integer> {
     @Query(value = """
                     SELECT TOP 5
-                        ad.ma_ao_dai,
-                    	ad.ten_ao_dai,
-                        SUM(hdct.so_luong) as tong_so_luong_ban,
-                        SUM(hdct.so_luong * hdct.don_gia) as tong_tien_ban
+                        ad.ma_ao_dai as maAoDai,
+                    	ad.ten_ao_dai as tenAoDai,
+                        SUM(hdct.so_luong) as tongSoLuongDaBan,
+                        SUM(hdct.so_luong * hdct.don_gia) as tongTienDaBan
                     FROM ao_dai ad
                     JOIN ao_dai_chi_tiet adct ON ad.id = adct.id_ao_dai
                     JOIN hoa_don_chi_tiet hdct ON adct.id = hdct.id_ao_dai_chi_tiet
                     JOIN hoa_don hd ON hdct.id_hoa_don = hd.id
                     WHERE hd.trang_thai = N'Đã thanh toán'
                     GROUP BY ad.ma_ao_dai, ad.ten_ao_dai
-                    ORDER BY tong_so_luong_ban DESC
+                    ORDER BY tongSoLuongDaBan DESC
             """, nativeQuery = true)
     List<KetQuaThongKeTop5Response> getTop5AoDaiBanChay();
 
@@ -63,11 +63,11 @@ public interface ThongKeRepo extends JpaRepository<AoDai,Integer> {
     @Query(value = """
                      SELECT
                             CAST(hd.ngay_tao AS DATE) as ngay,
-                            COUNT(DISTINCT hd.id) as so_hoa_don,
-                            SUM(hd.tong_tien) as tong_doanh_thu,
-                            SUM(hd.phi_giao_hang) as tong_phi_ship,
-                            SUM(gg.tien_giam_gia) as tong_tien_giam,
-                            SUM(hd.tong_tien - COALESCE(gg.tien_giam_gia, 0)) as doanh_thu_thuc_te
+                            COUNT(DISTINCT hd.id) as tongHoaDon,
+                            SUM(hd.tong_tien) as tongDoanhThu,
+                            SUM(hd.phi_giao_hang) as tongPhiShip,
+                            SUM(gg.tien_giam_gia) as tongGiamGia,
+                            SUM(hd.tong_tien - COALESCE(gg.tien_giam_gia, 0)) as doanhThuThucTe
                         FROM hoa_don hd
                         LEFT JOIN giam_gia gg ON hd.id_giam_gia = gg.id
                         WHERE hd.trang_thai = N'Đã thanh toán'

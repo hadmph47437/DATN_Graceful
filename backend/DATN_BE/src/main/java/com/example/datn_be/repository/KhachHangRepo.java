@@ -12,46 +12,42 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface KhachHangRepo extends JpaRepository<KhachHang, Integer> {
     @Query(value = """
-   SELECT 
-       kh.id AS id,
-       kh.ma_khach_hang AS maKhachHang,
-       kh.ho_ten AS hoTen,
-       kh.gioi_tinh AS gioiTinh,
-       kh.ngay_sinh AS ngaySinh,
-       kh.email AS email,
-       kh.so_dien_thoai AS soDienThoai,
-       kh.ten_dang_nhap AS tenDangNhap,
-       kh.ngay_tao AS ngayTao,
-       dc.id AS diaChiId,
-       dc.duong AS diaChi_duong,
-       dc.quan AS diaChi_quan,
-       dc.thanh_pho AS diaChi_thanhPho,
-       dc.tinh AS diaChi_tinh,
-       dc.mac_dinh AS diaChi_macDinh
-   FROM khach_hang kh
-   LEFT JOIN dia_chi dc ON dc.id_khach_hang = kh.id
-   WHERE 
-       (:maKhachHang IS NULL OR kh.ma_khach_hang LIKE %:maKhachHang%)
-       AND (:hoTen IS NULL OR kh.ho_ten LIKE %:hoTen%)
-       AND (:email IS NULL OR kh.email LIKE %:email%)
-       AND (:soDienThoai IS NULL OR kh.so_dien_thoai LIKE %:soDienThoai%)
-       AND (:tenDangNhap IS NULL OR kh.ten_dang_nhap LIKE %:tenDangNhap%)
-""", countQuery = """
-   SELECT COUNT(DISTINCT kh.id)
-   FROM khach_hang kh
-   WHERE 
-       (:maKhachHang IS NULL OR kh.ma_khach_hang LIKE %:maKhachHang%)
-       AND (:hoTen IS NULL OR kh.ho_ten LIKE %:hoTen%)
-       AND (:email IS NULL OR kh.email LIKE %:email%)
-       AND (:soDienThoai IS NULL OR kh.so_dien_thoai LIKE %:soDienThoai%)
-       AND (:tenDangNhap IS NULL OR kh.ten_dang_nhap LIKE %:tenDangNhap%)
-""", nativeQuery = true)
+    SELECT 
+        kh.id AS id,
+        kh.ma_khach_hang AS maKhachHang,
+        kh.ho_ten AS hoTen,
+        kh.gioi_tinh AS gioiTinh,
+        kh.ngay_sinh AS ngaySinh,
+        kh.email AS email,
+        kh.so_dien_thoai AS soDienThoai,
+        kh.ten_dang_nhap AS tenDangNhap,
+        kh.ngay_tao AS ngayTao,
+        dc.id AS diaChiId,
+        dc.duong AS diaChi_duong,
+        dc.quan AS diaChi_quan,
+        dc.thanh_pho AS diaChi_thanhPho,
+        dc.tinh AS diaChi_tinh,
+        dc.mac_dinh AS diaChi_macDinh
+    FROM khach_hang kh
+    LEFT JOIN dia_chi dc ON dc.id_khach_hang = kh.id
+    WHERE :keyword IS NULL 
+        OR kh.ma_khach_hang LIKE %:keyword%
+        OR kh.ho_ten LIKE %:keyword%
+        OR kh.email LIKE %:keyword%
+        OR kh.so_dien_thoai LIKE %:keyword%
+        OR kh.ten_dang_nhap LIKE %:keyword%
+    """, countQuery = """
+    SELECT COUNT(DISTINCT kh.id)
+    FROM khach_hang kh
+    WHERE :keyword IS NULL 
+        OR kh.ma_khach_hang LIKE %:keyword%
+        OR kh.ho_ten LIKE %:keyword%
+        OR kh.email LIKE %:keyword%
+        OR kh.so_dien_thoai LIKE %:keyword%
+        OR kh.ten_dang_nhap LIKE %:keyword%
+    """, nativeQuery = true)
     Page<KhachHangResponse> getAllKhachHang(
-            @Param("maKhachHang") String maKhachHang,
-            @Param("hoTen") String hoTen,
-            @Param("email") String email,
-            @Param("soDienThoai") String soDienThoai,
-            @Param("tenDangNhap") String tenDangNhap,
+            @Param("keyword") String keyword,
             Pageable pageable
     );
 

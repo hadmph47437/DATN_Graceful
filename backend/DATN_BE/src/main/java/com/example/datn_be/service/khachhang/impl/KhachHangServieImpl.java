@@ -23,12 +23,9 @@ public class KhachHangServieImpl implements KhachHangService {
     @Autowired
     private final KhachHangRepo khachHangRepo;
 
-
     @Override
-    public ResponseEntity<?> getAllKhachHang(String maKhachHang, String hoTen, String email, String soDienThoai,
-                                             String tenDangNhap, Pageable pageable) {
-        return new ResponseEntity<>(khachHangRepo.getAllKhachHang(maKhachHang, hoTen, email,
-                soDienThoai, tenDangNhap, pageable), HttpStatus.OK);
+    public ResponseEntity<?> getAllKhachHang(String keyword, Pageable pageable) {
+        return new ResponseEntity<>(khachHangRepo.getAllKhachHang(keyword, pageable), HttpStatus.OK);
     }
 
     @Override

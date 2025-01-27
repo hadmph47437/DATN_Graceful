@@ -28,14 +28,10 @@ public class KhachHangController {
     private final KhachHangServieImpl khachHangServie;
 
     @GetMapping("hien-thi")
-    public ResponseEntity<?> hienThi(@RequestParam(required = false) String maKhachHang,
-                                     @RequestParam(required = false) String hoTen,
-                                     @RequestParam(required = false) String email,
-                                     @RequestParam(required = false) String soDienThoai,
-                                     @RequestParam(required = false) String tenDangNhap,
+    public ResponseEntity<?> hienThi(@RequestParam(required = false) String keyword,
                                      @RequestParam(value = "page",defaultValue = "0") Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return khachHangServie.getAllKhachHang(maKhachHang,hoTen,email,soDienThoai,tenDangNhap,pageable);
+        return khachHangServie.getAllKhachHang(keyword,pageable);
     }
 
     @PostMapping("add")

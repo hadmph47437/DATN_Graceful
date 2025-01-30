@@ -27,19 +27,19 @@ public class HoaDon {
     @Column(name = "phuong_thuc_thanh_toan")
     private Boolean phuongThucThanhToan;
 
-    @Column(name = "tong_tien", precision = 18, scale = 0)
-    private BigDecimal tongTien;
+    @Column(name = "tong_tien")
+    private Double tongTien;
 
-    @Column(name = "ghi_chu", columnDefinition = "TEXT")
+    @Column(name = "ghi_chu")
     private String ghiChu;
 
-    @Column(name = "phi_giao_hang", precision = 18, scale = 0)
-    private BigDecimal phiGiaoHang;
+    @Column(name = "phi_giao_hang")
+    private Double phiGiaoHang;
 
     @Column(name = "hinh_thuc_mua_hang")
     private Boolean hinhThucMuaHang;
 
-    @Column(name = "dia_chi_giao_hang", columnDefinition = "TEXT")
+    @Column(name = "dia_chi_giao_hang")
     private String diaChiGiaoHang;
 
     @Temporal(TemporalType.TIMESTAMP)

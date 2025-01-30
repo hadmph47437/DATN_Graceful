@@ -56,23 +56,23 @@ export default {
 
 <style scoped>
 .navbar-nav {
-  width: 250px; /* Chiều rộng của menu */
+  width: 220px; /* Chiều rộng của menu */
   position: fixed; /* Menu cố định */
   top: 0;
   left: 0;
   height: 100vh; /* Chiều cao menu bằng chiều cao màn hình */
-  background-color:rgba(227, 225, 225, 0.99); /* Màu nền sáng cho menu */
+  background-color:rgba(225, 225, 227, 0.99); /* Màu nền sáng cho menu */
   color: #333; /* Màu chữ tối cho dễ đọc */
   padding-top: 30px; /* Khoảng cách từ trên xuống */
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Bóng đổ cho menu */
 }
 
 .nav-item {
-  margin-bottom: 20px; /* Khoảng cách giữa các mục */
+  margin-bottom: 23px; /* Khoảng cách giữa các mục */
 }
 
 .nav-link {
-  font-size: 18px;
+  font-size: 17px;
   color: #333;
   padding: 12px 20px; /* Điều chỉnh padding để menu đẹp hơn */
   border-radius: 5px;

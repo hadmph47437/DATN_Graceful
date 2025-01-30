@@ -16,4 +16,17 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, Integer> {
 
     Page<HoaDon> findByTrangThai(String trangThai, Pageable pageable);
 
+    List<HoaDon> findByTrangThai(String trangThai);
+
+    @Query("SELECT h FROM HoaDon h WHERE " +
+            "(:tuKhoa IS NULL OR h.maHoaDon LIKE %:tuKhoa% " +
+            "OR h.khachHang.hoTen LIKE %:tuKhoa% " +
+            "OR h.khachHang.soDienThoai LIKE %:tuKhoa% " +
+            "OR h.khachHang.maKhachHang LIKE %:tuKhoa%) " +
+            "AND h.trangThai = 'Chưa thanh toán'")
+    List<HoaDon> timKiemHoaDonTheoTuKhoa(@Param("tuKhoa") String tuKhoa);
+
+
+
+
 }

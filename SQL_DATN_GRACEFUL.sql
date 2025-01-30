@@ -2,6 +2,8 @@ CREATE DATABASE DATN_GRACEFUL
 GO
 USE DATN_GRACEFUL
 GO
+
+select * from nhan_vien
 -- Bảng Nhà cung cấp
 CREATE TABLE nha_cung_cap (
     id INT PRIMARY KEY IDENTITY(1,1),
@@ -381,11 +383,11 @@ VALUES
 -- Bảng Hóa đơn chi tiết
 INSERT INTO hoa_don_chi_tiet (id_hoa_don, id_ao_dai_chi_tiet, so_luong, don_gia)
 VALUES 
-(1, 1, 1, 550000),
-(2, 2, 2, 350000),
-(3, 3, 3, 170000),
-(4, 4, 1, 280000),
-(5, 5, 2, 450000);
+(6, 1, 1, 550000),
+(7, 2, 2, 350000),
+(8, 3, 3, 170000),
+(9, 4, 1, 280000),
+(10, 5, 2, 450000);
 
 -- Bảng Giỏ hàng chi tiết
 INSERT INTO gio_hang_chi_tiet (id_nhan_vien, id_ao_dai_chi_tiet, so_luong)

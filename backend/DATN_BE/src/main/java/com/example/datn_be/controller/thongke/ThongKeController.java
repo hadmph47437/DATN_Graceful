@@ -50,4 +50,9 @@ public class ThongKeController {
         return new ResponseEntity<>(thongKeService.thongKeDoanhThuTheoKhoangThoiGian(startDate, endDate), HttpStatus.OK);
     }
 
+    @GetMapping("hien-thi-loai-ao-dai-ban-nhieu")
+    public ResponseEntity<?> hienThiLoaiAoDaiBanNhieu() {
+        return new ResponseEntity<>(thongKeService.getLoaiAoDaiBanNhieu(), HttpStatus.OK);
+    }
+
 }

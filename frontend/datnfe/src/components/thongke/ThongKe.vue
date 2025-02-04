@@ -143,7 +143,17 @@
         <h4>Top 5 Áo Dài Bán Chạy</h4>
       </div>
       <div class="card-body">
-        <canvas id="combinedChart" height="100"></canvas>
+        <canvas id="combinedChart" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- Thống kê loại áo dài -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>Phân Bố Loại Áo Dài</h4>
+      </div>
+      <div class="card-body">
+        <canvas id="pieChart" height="100"></canvas>
       </div>
     </div>
 
@@ -206,6 +216,9 @@ export default {
       dateRangeRevenue: [],
       startDate: new Date().toISOString().split("T")[0],
       endDate: new Date().toISOString().split("T")[0],
+      // phân bố loại áo dài
+      pieChart: null,
+      loaiAoDaiData: [],
     };
   },
   async mounted() {
@@ -215,12 +228,14 @@ export default {
       this.fetchMonthlyRevenue(),
       this.fetchYearlyRevenue(),
       this.fetchDateRangeRevenue(),
+      this.fetchLoaiAoDaiData(),
     ]);
     this.initChart();
     this.initDailyRevenueChart();
     this.initMonthlyRevenueChart();
     this.initYearlyRevenueChart();
     this.initDateRangeRevenueChart();
+    this.initPieChart();
   },
   beforeUnmount() {
     if (this.chart) {
@@ -238,6 +253,9 @@ export default {
     if (this.dateRangeRevenueChart) {
       this.dateRangeRevenueChart.destroy();
     }
+    if (this.pieChart) {
+      this.pieChart.destroy();
+    }
   },
   watch: {
     selectedMonth() {
@@ -248,6 +266,11 @@ export default {
     },
     selectedYearRevenue() {
       this.fetchYearlyRevenue();
+    },
+    loaiAoDaiData() {
+      if (this.loaiAoDaiData.length) {
+        this.initPieChart();
+      }
     },
   },
   methods: {
@@ -892,6 +915,76 @@ export default {
           interaction: {
             intersect: false,
             mode: "index",
+          },
+        },
+      });
+    },
+
+    // phân bố loại áo dài
+
+    async fetchLoaiAoDaiData() {
+      try {
+        const response = await ThongKeService.getLoaiAoDaiBanNhieu();
+        this.loaiAoDaiData = response.data.body;
+      } catch (error) {
+        console.error("Error fetching loai ao dai data:", error);
+        this.$toast.error("Không thể tải dữ liệu thống kê loại áo dài");
+      }
+    },
+
+    initPieChart() {
+      const ctx = document.getElementById("pieChart");
+
+      const colors = this.loaiAoDaiData.map(
+        () => `hsl(${Math.random() * 360}, 70%, 50%)`
+      );
+
+      this.pieChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: this.loaiAoDaiData.map((item) => item.tenLoaiAoDai),
+          datasets: [
+            {
+              data: this.loaiAoDaiData.map((item) => item.phanTram),
+              backgroundColor: colors,
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          layout: {
+            padding: 10,
+          },
+          plugins: {
+            legend: {
+              position: "right",
+              labels: {
+                padding: 10,
+                usePointStyle: true,
+              },
+              font: {
+              size: 10 
+            }
+            },
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  const label = context.label || "";
+                  const value = context.raw || 0;
+                  const soLuong = this.loaiAoDaiData[context.dataIndex].soLuong;
+                  return `${label}: ${value}% (${soLuong} sản phẩm)`;
+                },
+              },
+            },
+            title: {
+              display: false,
+              text: "Phân Bố Loại Áo Dài",
+              font: {
+                size: 16,
+                weight: "bold",
+              },
+            },
           },
         },
       });

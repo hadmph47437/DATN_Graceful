@@ -14,4 +14,6 @@ public interface ThongKeService {
     ResponseEntity<?> thongKeDoanhThuTheoNam(Integer nam);
 
     ResponseEntity<?> thongKeDoanhThuTheoKhoangThoiGian(LocalDate startDate, LocalDate endDate);
+
+    ResponseEntity<?> getLoaiAoDaiBanNhieu();
 }

@@ -28,5 +28,9 @@ class ThongKeService {
             params:{startDate,endDate}
         })
     }
+
+    getLoaiAoDaiBanNhieu(){
+        return axios.get(`${BASE_URL}/hien-thi-loai-ao-dai-ban-nhieu`)
+    }
 }
 export default new ThongKeService();

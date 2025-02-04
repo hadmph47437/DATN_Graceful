@@ -42,5 +42,10 @@ public class ThongKeServiceImpl implements ThongKeService {
         return new ResponseEntity<>(thongKeRepo.getDoanhThuTheoKhoangThoiGian(startDate, endDate), HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<?> getLoaiAoDaiBanNhieu() {
+        return new ResponseEntity<>(thongKeRepo.getLoaiAoDaiBanNhieu(), HttpStatus.OK);
+    }
+
 
 }

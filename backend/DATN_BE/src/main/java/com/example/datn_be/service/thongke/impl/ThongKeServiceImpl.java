@@ -33,6 +33,11 @@ public class ThongKeServiceImpl implements ThongKeService {
     }
 
     @Override
+    public ResponseEntity<?> thongKeDoanhThuTheoNam(Integer nam) {
+        return new ResponseEntity<>(thongKeRepo.getDoanhThuTheoNam(nam), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<?> thongKeDoanhThuTheoKhoangThoiGian(LocalDate startDate, LocalDate endDate) {
         return new ResponseEntity<>(thongKeRepo.getDoanhThuTheoKhoangThoiGian(startDate, endDate), HttpStatus.OK);
     }

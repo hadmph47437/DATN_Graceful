@@ -6,7 +6,12 @@ import java.time.LocalDate;
 
 public interface ThongKeService {
     ResponseEntity<?> thongKeTop5BanChay();
+
     ResponseEntity<?> thongKeDoanhThuTheoNgay(LocalDate ngay);
+
     ResponseEntity<?> thongKeDoanhThuTheoThang(Integer thang, Integer nam);
+
+    ResponseEntity<?> thongKeDoanhThuTheoNam(Integer nam);
+
     ResponseEntity<?> thongKeDoanhThuTheoKhoangThoiGian(LocalDate startDate, LocalDate endDate);
 }

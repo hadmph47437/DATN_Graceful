@@ -39,6 +39,11 @@ public class ThongKeController {
         return new ResponseEntity<>(thongKeService.thongKeDoanhThuTheoThang(thang, nam), HttpStatus.OK);
     }
 
+    @GetMapping("hien-thi-doanh-thu-theo-nam")
+    public ResponseEntity<?> hienThiDoanhThuTheoNam(@RequestParam Integer nam) {
+        return new ResponseEntity<>(thongKeService.thongKeDoanhThuTheoNam(nam), HttpStatus.OK);
+    }
+
     @GetMapping("hien-thi-doanh-thu-theo-khoang-thoi-gian")
     public ResponseEntity<?> hienThiDoanhThuTheoThang(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate,
                                                       @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {

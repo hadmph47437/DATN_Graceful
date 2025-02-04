@@ -1,6 +1,7 @@
 package com.example.datn_be.repository;
 
 import com.example.datn_be.dto.thongke.response.DoanhThuTheoKhoangThoiGianRes;
+import com.example.datn_be.dto.thongke.response.DoanhThuTheoNamResponse;
 import com.example.datn_be.dto.thongke.response.DoanhThuTheoThangResponse;
 import com.example.datn_be.dto.thongke.response.DoanhThuTrongNgayResponse;
 import com.example.datn_be.dto.thongke.response.KetQuaThongKeTop5Response;
@@ -45,20 +46,35 @@ public interface ThongKeRepo extends JpaRepository<AoDai,Integer> {
 
     @Query(value = """
     SELECT
-        MONTH(hd.ngay_tao) as thang,
-        YEAR(hd.ngay_tao) as nam,
+        DAY(hd.ngay_tao) as ngay,
         COUNT(DISTINCT hd.id) as tongSoHoaDon,
-        CAST(SUM(hd.tong_tien) AS DECIMAL(20,2)) as tongDoanhThuThang,
+        CAST(SUM(hd.tong_tien) AS DECIMAL(20,2)) as tongDoanhThuNgay,
         CAST(SUM(hd.phi_giao_hang) AS DECIMAL(20,2)) as tongPhiShip,
         CAST(SUM(hd.tong_tien - hd.phi_giao_hang) AS DECIMAL(20,2)) as tongDoanhThuThucTe
     FROM hoa_don hd
     WHERE hd.trang_thai = N'Đã thanh toán'
-      AND MONTH(hd.ngay_tao) = :thang
-      AND YEAR(hd.ngay_tao) = :nam
-    GROUP BY MONTH(hd.ngay_tao), YEAR(hd.ngay_tao)
-    ORDER BY nam DESC, thang DESC
+        AND MONTH(hd.ngay_tao) = :thang
+        AND YEAR(hd.ngay_tao) = :nam
+    GROUP BY DAY(hd.ngay_tao), MONTH(hd.ngay_tao), YEAR(hd.ngay_tao)
+    ORDER BY DAY(hd.ngay_tao) ASC
 """, nativeQuery = true)
     List<DoanhThuTheoThangResponse> getDoanhThuTheoThang(Integer thang, Integer nam);
+
+    @Query(value = """
+                SELECT
+                    MONTH(hd.ngay_tao) as thang,
+                    COUNT(DISTINCT hd.id) as tongSoHoaDon,
+                    CAST(SUM(hd.tong_tien) AS DECIMAL(20,2)) as tongDoanhThuThang,
+                    CAST(SUM(hd.phi_giao_hang) AS DECIMAL(20,2)) as tongPhiShip,
+                    CAST(SUM(hd.tong_tien - hd.phi_giao_hang) AS DECIMAL(20,2)) as DoanhThuThucTe
+                FROM hoa_don hd
+                WHERE hd.trang_thai = N'Đã thanh toán'
+                    AND YEAR(hd.ngay_tao) = :nam
+                GROUP BY MONTH(hd.ngay_tao)
+                ORDER BY thang ASC
+            """, nativeQuery = true)
+    List<DoanhThuTheoNamResponse> getDoanhThuTheoNam(Integer nam);
+
 
     @Query(value = """
                      SELECT

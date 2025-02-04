@@ -3,13 +3,11 @@ package com.example.datn_be.dto.thongke.response;
 
 public interface DoanhThuTheoThangResponse {
 
-    Integer getThang();
-
-    Integer getNam();
+    Integer getNgay();
 
     Integer getTongSoHoaDon();
 
-    Double getTongDoanhThuThang();
+    Double getTongDoanhThuNgay();
 
     Double getTongPhiShip();
 

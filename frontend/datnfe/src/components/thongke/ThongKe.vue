@@ -934,7 +934,6 @@ export default {
 
     initPieChart() {
       const ctx = document.getElementById("pieChart");
-
       const colors = this.loaiAoDaiData.map(
         () => `hsl(${Math.random() * 360}, 70%, 50%)`
       );
@@ -946,13 +945,26 @@ export default {
           datasets: [
             {
               data: this.loaiAoDaiData.map((item) => item.phanTram),
-              backgroundColor: colors,
+              backgroundColor: [
+                "rgb(0, 128, 0)", 
+                "rgb(128, 0, 128)", 
+                "rgb(255, 140, 0)", 
+                "rgb(0, 191, 255)", 
+                "rgb(220, 20, 60)", 
+                "rgb(34, 139, 34)", 
+                "rgb(255, 215, 0)", 
+                "rgb(30, 144, 255)", 
+                "rgb(139, 69, 19)", 
+                "rgb(255, 20, 147)",
+              ].slice(0, this.loaiAoDaiData.length),
               borderWidth: 1,
             },
           ],
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
+          height: 300,
           layout: {
             padding: 10,
           },
@@ -960,12 +972,12 @@ export default {
             legend: {
               position: "right",
               labels: {
-                padding: 10,
+                padding: 5,
                 usePointStyle: true,
               },
               font: {
-              size: 10 
-            }
+                size: 8,
+              },
             },
             tooltip: {
               callbacks: {
@@ -1014,4 +1026,12 @@ export default {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+
+canvas#pieChart {
+  max-width: 300%; 
+  max-height: 300%; 
+  margin: 0 auto; 
+  display: block;
+}
+
 </style>

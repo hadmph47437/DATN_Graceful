@@ -108,6 +108,7 @@ export default {
       currentPage: 0,
       totalPages: 0,
       pageSize: 5,
+      searchTimeout: null,
     };
   },
   created() {
@@ -134,9 +135,17 @@ export default {
       this.$router.push(`/view/${id}`);
     },
     handleSearch() {
-      this.currentPage = 0; 
-      this.getAllKhachHangs();
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout);
+      }
+      this.searchTimeout = setTimeout(() =>{
+         this.currentPage = 0; 
+         this.getAllKhachHangs();
+      },300)
+      // this.currentPage = 0; 
+      // this.getAllKhachHangs();
     },
+    
     changePage(page) {
       if (page >= 0 && page < this.totalPages) {
         this.currentPage = page;

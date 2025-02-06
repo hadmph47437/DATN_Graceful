@@ -150,7 +150,7 @@
     <!-- Thống kê loại áo dài -->
     <div class="card mt-4">
       <div class="card-header">
-        <h4>Phân Bố Loại Áo Dài</h4>
+        <h4>Tỉ Lệ Loại Áo Dài Bán Chạy</h4>
       </div>
       <div class="card-body">
         <canvas id="pieChart" height="100"></canvas>
@@ -240,15 +240,11 @@ export default {
         this.fetchDateRangeRevenue(),
         this.fetchLoaiAoDaiData(),
       ]);
+      await this.$nextTick();
+      this.initAllCharts();
     } catch (error) {
       console.error("Lỗi khi tải dữ liệu", error);
     }
-    this.initChart();
-    this.initDailyRevenueChart();
-    this.initMonthlyRevenueChart();
-    this.initYearlyRevenueChart();
-    this.initDateRangeRevenueChart();
-    this.initPieChart();
   },
   beforeUnmount() {
     Object.values(this.charts).forEach((chart) => {
@@ -281,6 +277,26 @@ export default {
     },
   },
   methods: {
+    initAllCharts() {
+      if (this.topProducts.length > 0) {
+        this.initChart();
+      }
+      if (this.dailyRevenue) {
+        this.initDailyRevenueChart();
+      }
+      if (this.monthlyRevenue.length > 0) {
+        this.initMonthlyRevenueChart();
+      }
+      if (this.yearlyRevenue.length > 0) {
+        this.initYearlyRevenueChart();
+      }
+      if (this.dateRangeRevenue.length > 0) {
+        this.initDateRangeRevenueChart();
+      }
+      if (this.loaiAoDaiData.length > 0) {
+        this.initPieChart();
+      }
+    },
     formatCurrency(value) {
       return new Intl.NumberFormat("vi-VN", {
         style: "currency",
@@ -318,7 +334,11 @@ export default {
 
     initChart() {
       const ctx = document.getElementById("combinedChart");
-      this.chart = new Chart(ctx, {
+      if (!ctx) return;
+      if (this.charts.combinedChart) {
+        this.charts.combinedChart.destroy();
+      }
+      this.charts.combinedChart = new Chart(ctx, {
         type: "bar",
         data: {
           labels: this.topProducts.map(
@@ -1042,4 +1062,10 @@ canvas#pieChart {
   margin: 0 auto;
   display: block;
 }
+.form-select {
+  font-size: 16px; 
+  padding: 8px 12px; 
+  height: 40px; 
+}
+
 </style>

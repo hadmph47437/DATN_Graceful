@@ -137,43 +137,46 @@ export default {
   },
   methods: {
     getKhachHangById(id) {
-        KhachHangService.getKhachHangById(id)
-            .then((response) => {
-                this.khachHang = response.data;
-                
-                // Nếu có địa chỉ, lấy địa chỉ mặc định hoặc địa chỉ đầu tiên
-                if (this.khachHang.diaChis && this.khachHang.diaChis.length > 0) {
-                    const diaChi = this.khachHang.diaChis.find(dc => dc.macDinh) || this.khachHang.diaChis[0];
-                    
-                    this.khachHang.diaChi_duong = diaChi.duong;
-                    this.khachHang.diaChi_quan = diaChi.quan;
-                    this.khachHang.diaChi_thanhPho = diaChi.thanhPho;
-                }
-            })
-            .catch((error) => {
-                console.error("Lỗi khi lấy thông tin khách hàng:", error);
-                this.$router.push("/khach-hang/list");
-            });
+      KhachHangService.getKhachHangById(id)
+        .then((response) => {
+          this.khachHang = response.data;
+
+          // Nếu có địa chỉ, lấy địa chỉ mặc định hoặc địa chỉ đầu tiên
+          if (this.khachHang.diaChis && this.khachHang.diaChis.length > 0) {
+            const diaChi =
+              this.khachHang.diaChis.find((dc) => dc.macDinh) ||
+              this.khachHang.diaChis[0];
+
+            this.khachHang.diaChi_duong = diaChi.duong;
+            this.khachHang.diaChi_quan = diaChi.quan;
+            this.khachHang.diaChi_thanhPho = diaChi.thanhPho;
+          }
+        })
+        .catch((error) => {
+          console.error("Lỗi khi lấy thông tin khách hàng:", error);
+          this.$router.push("/khach-hang/list");
+        });
     },
     updateKhachHang() {
-        KhachHangService.updateKhachHang(this.khachHang.id, this.khachHang)
-            .then(() => {
-                this.$toast.success('Cập nhật khách hàng thành công!', {
-                    position: 'top-right',
-                    autoClose: false,
-                    closeOnClick: true,
-                    pauseOnHover: true
-                });
-                this.$router.push('/khach-hang/list');
-            })
-            .catch(error => {
-                this.$toast.error('Cập nhật khách hàng thất bại!',{
-                    autoClose: false,
-                    closeOnClick: true,
-                    pauseOnHover: true
-                });
-                
-            });
+      KhachHangService.updateKhachHang(this.khachHang.id, this.khachHang)
+        .then(() => {
+          this.$toast.success("Cập nhật khách hàng thành công!", {
+            position: "top-right",
+            autoClose: 2000,
+            closeOnClick: true,
+            pauseOnHover: true,
+          });
+          setTimeout(() => {
+            this.$router.push("/khach-hang/list");
+          }, 2000);
+        })
+        .catch((error) => {
+          this.$toast.error("Cập nhật khách hàng thất bại!", {
+            autoClose: 3000,
+            closeOnClick: true,
+            pauseOnHover: true,
+          });
+        });
     },
     cancelEdit() {
       this.$router.push("/khach-hang/list");

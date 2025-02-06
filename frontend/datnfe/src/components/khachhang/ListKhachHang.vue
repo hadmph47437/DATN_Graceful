@@ -9,7 +9,7 @@
     <div class="mb-3">
       <input
         v-model="searchTerm"
-        @input="handleSearch"
+        @keyup="handleSearch"
         class="form-control"
         placeholder="Tìm kiếm theo mã, tên, email, số điện thoại, tên đăng nhập"
       />

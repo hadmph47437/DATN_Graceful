@@ -164,18 +164,19 @@ export default {
         .then((response) => {
           this.$toast.success("Thêm khách hàng thành công!", {
             position: "top-right",
-            autoClose: false,
+            autoClose: 2000,
             closeOnClick: true,
             pauseOnHover: true,
           });
-
-          this.$router.push("/khach-hang/list");
+          setTimeout(() => {
+            this.$router.push("/khach-hang/list");
+          }, 2000);
         })
         .catch((error) => {
           console.error("Error adding customer:", error);
           this.$toast.error("Có lỗi xảy ra khi thêm khách hàng!", {
             position: "top-right",
-            autoClose: false,
+            autoClose: 3000,
             closeOnClick: true,
             pauseOnHover: true,
           });

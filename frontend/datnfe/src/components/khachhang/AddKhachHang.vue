@@ -122,7 +122,7 @@
         <button type="submit" class="btn btn-primary me-2">Lưu</button>
         <button
           type="button"
-          @click="$router.push('/list')"
+          @click="$router.push('/khach-hang/list')"
           class="btn btn-secondary"
         >
           Hủy
@@ -169,7 +169,7 @@ export default {
             pauseOnHover: true,
           });
 
-          this.$router.push("/list");
+          this.$router.push("/khach-hang/list");
         })
         .catch((error) => {
           console.error("Error adding customer:", error);

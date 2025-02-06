@@ -8,11 +8,11 @@ import ThongKe from "../components/thongke/ThongKe.vue";
 
 
 const routes = [
-  { path: "/", redirect: "/list" },
-  { path: "/list", component: ListKhachHang },
-  { path: "/add", component: AddKhachHang },
-  { path: "/update/:id", component: EditKhachHang },
-  { path: "/view/:id", component: ViewKhachHang},
+  { path: "/khach-hang", redirect: "/khach-hang/list" },
+  { path: "/khach-hang/list", component: ListKhachHang },
+  { path: "/khach-hang/add", component: AddKhachHang },
+  { path: "/khach-hang/update/:id", component: EditKhachHang },
+  { path: "/khach-hang/view/:id", component: ViewKhachHang},
   { path: "/thong-ke", component: ThongKe}
 ];
 

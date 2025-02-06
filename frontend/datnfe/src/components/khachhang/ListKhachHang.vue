@@ -2,7 +2,7 @@
   <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2>Danh sách khách hàng</h2>
-      <button @click="$router.push('/add')" class="btn btn-primary">
+      <button @click="$router.push('/khach-hang/add')" class="btn btn-primary">
         <i class="bi bi-plus-circle me-2"></i>Thêm khách hàng
       </button>
     </div>
@@ -129,10 +129,10 @@ export default {
         .catch((error) => console.error(error));
     },
     editKhachHang(id) {
-      this.$router.push(`/update/${id}`);
+      this.$router.push(`/khach-hang/update/${id}`);
     },
     viewKhachHang(id) {
-      this.$router.push(`/view/${id}`);
+      this.$router.push(`/khach-hang/view/${id}`);
     },
     handleSearch() {
       if (this.searchTimeout) {

@@ -222,14 +222,27 @@ export default {
     };
   },
   async mounted() {
-    await Promise.all([
-      this.fetchTopProducts(),
-      this.fetchDailyRevenue(),
-      this.fetchMonthlyRevenue(),
-      this.fetchYearlyRevenue(),
-      this.fetchDateRangeRevenue(),
-      this.fetchLoaiAoDaiData(),
-    ]);
+    await this.$nextTick();
+    this.charts = {
+      combinedChart: null,
+      dailyRevenueChart: null,
+      monthlyRevenueChart: null,
+      yearlyRevenueChart: null,
+      dateRangeRevenueChart: null,
+      pieChart: null,
+    };
+    try {
+      await Promise.all([
+        this.fetchTopProducts(),
+        this.fetchDailyRevenue(),
+        this.fetchMonthlyRevenue(),
+        this.fetchYearlyRevenue(),
+        this.fetchDateRangeRevenue(),
+        this.fetchLoaiAoDaiData(),
+      ]);
+    } catch (error) {
+      console.error("Lỗi khi tải dữ liệu", error);
+    }
     this.initChart();
     this.initDailyRevenueChart();
     this.initMonthlyRevenueChart();
@@ -238,26 +251,14 @@ export default {
     this.initPieChart();
   },
   beforeUnmount() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
-    if (this.dailyRevenueChart) {
-      this.dailyRevenueChart.destroy();
-    }
-    if (this.monthlyRevenueChart) {
-      this.monthlyRevenueChart.destroy();
-    }
-    if (this.yearlyRevenueChart) {
-      this.yearlyRevenueChart.destroy();
-    }
-    if (this.dateRangeRevenueChart) {
-      this.dateRangeRevenueChart.destroy();
-    }
-    if (this.pieChart) {
-      this.pieChart.destroy();
-    }
+    Object.values(this.charts).forEach((chart) => {
+      if (chart) chart.destroy();
+    });
   },
   watch: {
+    selectedDate() {
+      this.fetchDailyRevenue();
+    },
     selectedMonth() {
       this.fetchMonthlyRevenue();
     },
@@ -266,6 +267,12 @@ export default {
     },
     selectedYearRevenue() {
       this.fetchYearlyRevenue();
+    },
+    startDate() {
+      this.fetchDateRangeRevenue();
+    },
+    endDate() {
+      this.fetchDateRangeRevenue();
     },
     loaiAoDaiData() {
       if (this.loaiAoDaiData.length) {
@@ -287,6 +294,7 @@ export default {
         this.topProducts = response.data.body;
         // Sắp xếp dữ liệu theo doanh thu giảm dần
         this.topProducts.sort((a, b) => b.tongTienDaBan - a.tongTienDaBan);
+        await this.$nextTick();
         this.initChart();
       } catch (error) {
         console.error("Error fetching top products:", error);
@@ -434,6 +442,7 @@ export default {
           this.selectedDate
         );
         this.dailyRevenue = response.data.body[0] || null;
+        await this.$nextTick();
         if (this.dailyRevenueChart) {
           this.dailyRevenueChart.destroy();
         }
@@ -946,15 +955,15 @@ export default {
             {
               data: this.loaiAoDaiData.map((item) => item.phanTram),
               backgroundColor: [
-                "rgb(0, 128, 0)", 
-                "rgb(128, 0, 128)", 
-                "rgb(255, 140, 0)", 
-                "rgb(0, 191, 255)", 
-                "rgb(220, 20, 60)", 
-                "rgb(34, 139, 34)", 
-                "rgb(255, 215, 0)", 
-                "rgb(30, 144, 255)", 
-                "rgb(139, 69, 19)", 
+                "rgb(0, 128, 0)",
+                "rgb(128, 0, 128)",
+                "rgb(255, 140, 0)",
+                "rgb(0, 191, 255)",
+                "rgb(220, 20, 60)",
+                "rgb(34, 139, 34)",
+                "rgb(255, 215, 0)",
+                "rgb(30, 144, 255)",
+                "rgb(139, 69, 19)",
                 "rgb(255, 20, 147)",
               ].slice(0, this.loaiAoDaiData.length),
               borderWidth: 1,
@@ -1028,10 +1037,9 @@ export default {
 }
 
 canvas#pieChart {
-  max-width: 300%; 
-  max-height: 300%; 
-  margin: 0 auto; 
+  max-width: 300%;
+  max-height: 300%;
+  margin: 0 auto;
   display: block;
 }
-
 </style>

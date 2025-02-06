@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="mt-3">
-      <button class="btn btn-secondary" @click="$router.push('/list')">
+      <button class="btn btn-secondary" @click="$router.push('/khach-hang/list')">
         Quay lại
       </button>
     </div>

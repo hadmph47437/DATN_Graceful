@@ -152,7 +152,7 @@ export default {
             })
             .catch((error) => {
                 console.error("Lỗi khi lấy thông tin khách hàng:", error);
-                this.$router.push("/list");
+                this.$router.push("/khach-hang/list");
             });
     },
     updateKhachHang() {
@@ -164,7 +164,7 @@ export default {
                     closeOnClick: true,
                     pauseOnHover: true
                 });
-                this.$router.push('/list');
+                this.$router.push('/khach-hang/list');
             })
             .catch(error => {
                 this.$toast.error('Cập nhật khách hàng thất bại!',{
@@ -176,7 +176,7 @@ export default {
             });
     },
     cancelEdit() {
-      this.$router.push("/list");
+      this.$router.push("/khach-hang/list");
     },
   },
 };

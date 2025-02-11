@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,32 +54,43 @@ public class KhachHangServieImpl implements KhachHangService {
 
     @Override
     public ResponseEntity<?> updateKhachHang(Integer id, KhachHangRequest khachHangRequest) {
-        KhachHang khachHang = khachHangRepo.findById(khachHangRequest.getId())
-                .orElseThrow(() -> new RuntimeException("Khách hàng không tồn tại"));
+        try {
+            KhachHang khachHang = khachHangRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Khách hàng không tồn tại"));
 
-        khachHang.setHoTen(khachHangRequest.getHoTen());
-        khachHang.setGioiTinh(khachHangRequest.getGioiTinh());
-        khachHang.setNgaySinh(khachHangRequest.getNgaySinh());
-        khachHang.setEmail(khachHangRequest.getEmail());
-        khachHang.setSoDienThoai(khachHangRequest.getSoDienThoai());
+            // Cập nhật thông tin cơ bản
+            khachHang.setHoTen(khachHangRequest.getHoTen());
+            khachHang.setGioiTinh(khachHangRequest.getGioiTinh());
+            khachHang.setNgaySinh(khachHangRequest.getNgaySinh());
+            khachHang.setEmail(khachHangRequest.getEmail());
+            khachHang.setSoDienThoai(khachHangRequest.getSoDienThoai());
 
-        List<DiaChi> diaChisMoi = khachHangRequest.getDiaChis().stream()
-                .map(diaChiRequest -> {
-                    DiaChi diaChi = new DiaChi();
-                    diaChi.setDuong(diaChiRequest.getDuong());
-                    diaChi.setQuan(diaChiRequest.getQuan());
-                    diaChi.setThanhPho(diaChiRequest.getThanhPho());
-                    diaChi.setTinh(diaChiRequest.getTinh());
-                    diaChi.setMacDinh(diaChiRequest.getMacDinh());
-                    diaChi.setKhachHang(khachHang);
-                    return diaChi;
-                })
-                .collect(Collectors.toList());
+            // Cập nhật địa chỉ
+            if (khachHangRequest.getDiaChis() != null) {
+                List<DiaChi> diaChisMoi = khachHangRequest.getDiaChis().stream()
+                        .map(diaChiRequest -> {
+                            DiaChi diaChi = new DiaChi();
+                            diaChi.setDuong(diaChiRequest.getDuong());
+                            diaChi.setQuan(diaChiRequest.getQuan());
+                            diaChi.setThanhPho(diaChiRequest.getThanhPho());
+                            diaChi.setTinh(diaChiRequest.getTinh());
+                            diaChi.setMacDinh(diaChiRequest.getMacDinh());
+                            diaChi.setKhachHang(khachHang);
+                            return diaChi;
+                        })
+                        .collect(Collectors.toList());
 
-        khachHang.getDiaChis().clear();
+                khachHang.getDiaChis().clear();
+                khachHang.getDiaChis().addAll(diaChisMoi);
+            }
 
-        khachHang.getDiaChis().addAll(diaChisMoi);
-        return new ResponseEntity<>(khachHangRepo.save(khachHang), HttpStatus.OK);
+            return new ResponseEntity<>(khachHangRepo.save(khachHang), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    Collections.singletonMap("error", e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     @Override

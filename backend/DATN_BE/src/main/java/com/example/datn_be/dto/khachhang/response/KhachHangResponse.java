@@ -21,7 +21,6 @@ public interface KhachHangResponse {
 
     String getSoDienThoai();
 
-    String getTenDangNhap();
 
     LocalDate getNgayTao();
 

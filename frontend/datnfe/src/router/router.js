@@ -5,15 +5,45 @@ import ViewKhachHang from "../components/khachhang/ViewKhachHang.vue";
 import AddKhachHang from "../components/khachhang/AddKhachHang.vue";
 import ThongKe from "../components/thongke/ThongKe.vue";
 
-
-
 const routes = [
   { path: "/khach-hang", redirect: "/khach-hang/list" },
-  { path: "/khach-hang/list", component: ListKhachHang },
-  { path: "/khach-hang/add", component: AddKhachHang },
-  { path: "/khach-hang/update/:id", component: EditKhachHang },
-  { path: "/khach-hang/view/:id", component: ViewKhachHang},
-  { path: "/thong-ke", component: ThongKe}
+  {
+    path: "/khach-hang/list",
+    component: () => import("../components/khachhang/ListKhachHang.vue"),
+    props: true,
+    meta: { isAdmin: true },
+  },
+  {
+    path: "/khach-hang/add",
+    component: () => import("../components/khachhang/AddKhachHang.vue"),
+    props: true,
+    meta: { isAdmin: true },
+  },
+  {
+    path: "/khach-hang/update/:id",
+    component: () => import("../components/khachhang/EditKhachHang.vue"),
+    props: true,
+    meta: { isAdmin: true },
+  },
+  {
+    path: "/khach-hang/view/:id",
+    component: () => import("../components/khachhang/ViewKhachHang.vue"),
+    props: true,
+    meta: { isAdmin: true },
+  },
+  {
+    path: "/thong-ke",
+    component: () => import("../components/thongke/ThongKe.vue"),
+    props: true,
+    meta: { isAdmin: true },
+  },
+
+  //   {
+  //     path: '/san-pham/list/all/:status?',
+  //     component: () => import('../components/san_pham/Tabs.vue'),
+  //     props: true,
+  //     meta: { isAdmin: true }
+  // },
 ];
 
 const router = createRouter({

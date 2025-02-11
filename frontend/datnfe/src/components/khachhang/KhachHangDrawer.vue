@@ -1,8 +1,5 @@
 <template>
-  <div 
-    class="customer-drawer" 
-    :class="{ 'drawer-open': isOpen }"
-  >
+  <div class="customer-drawer" :class="{ 'drawer-open': isOpen }">
     <div class="drawer-overlay" @click="closeDrawer" v-if="isOpen"></div>
     <div class="drawer-content">
       <button class="drawer-close" @click="closeDrawer">
@@ -50,7 +47,9 @@
               <div class="col-md-6">
                 <label><strong>Địa chỉ:</strong></label>
                 <p>
-                  {{ `${khachHang.diaChi_duong}, ${khachHang.diaChi_quan}, ${khachHang.diaChi_thanhPho}` }}
+                  {{
+                    `${khachHang.diaChi_duong}, ${khachHang.diaChi_quan}, ${khachHang.diaChi_thanhPho}`
+                  }}
                 </p>
               </div>
             </div>
@@ -66,38 +65,36 @@
     </div>
   </div>
 </template>
-
 <script>
 import KhachHangService from "../../services/KhachHangService";
-
 export default {
   props: {
     isOpen: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      khachHang: null
+      khachHang: null,
     };
   },
   methods: {
     fetchKhachHang(id) {
       KhachHangService.getKhachHangById(id)
         .then((response) => {
-          this.khachHang = response.data;
+          const khachHang = response.data;
 
-          // Tìm địa chỉ mặc định (nếu có), hoặc lấy địa chỉ đầu tiên
+          // Xử lý địa chỉ mặc định
           const diaChiMacDinh =
-            this.khachHang.diaChis.find((d) => d.macDinh) ||
-            this.khachHang.diaChis[0];
-          this.khachHang.diaChi_duong =
-            diaChiMacDinh?.duong || "Không có thông tin";
-          this.khachHang.diaChi_quan =
-            diaChiMacDinh?.quan || "Không có thông tin";
-          this.khachHang.diaChi_thanhPho =
+            khachHang.diaChis.find((d) => d.macDinh) || khachHang.diaChis[0];
+
+          khachHang.diaChi_duong = diaChiMacDinh?.duong || "Không có thông tin";
+          khachHang.diaChi_quan = diaChiMacDinh?.quan || "Không có thông tin";
+          khachHang.diaChi_thanhPho =
             diaChiMacDinh?.thanhPho || "Không có thông tin";
+
+          this.khachHang = khachHang;
         })
         .catch((error) => {
           console.error(error);
@@ -105,9 +102,9 @@ export default {
         });
     },
     closeDrawer() {
-      this.$emit('close');
-    }
-  }
+      this.$emit("close");
+    },
+  },
 };
 </script>
 
@@ -119,7 +116,7 @@ export default {
   width: 500px;
   height: 100vh;
   background: white;
-  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   transition: right 0.3s ease;
   z-index: 1000;
   overflow-y: auto;
@@ -136,7 +133,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(248, 248, 248, 0.5);
   z-index: 999;
 }
 
